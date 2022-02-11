@@ -21,7 +21,6 @@ d = MvNormal(zeros(10), cov_mat);
 
 dat = rand(d, 100);
 
-Pingouin.anderson(dat[1,:], "norm")
 
 td = TDist(2);
 tds = rand(td, 100);
@@ -35,11 +34,14 @@ pd = projection(M);
 
 using HypothesisTests
 
-ts = pd[:,1];
-nts = (ts .- mean(ts)) / std(ts)
-
-s = ExactOneSampleKSTest(nts, Normal(0,1))
+s = JarqueBeraTest(pd[:,1])
 pvalue(s)
+s.JB
 
-ntds = (tds .- mean(tds)) / std(tds)
-pvalue(ExactOneSampleKSTest(ntds, Normal(0,1)))
+pvalue(JarqueBeraTest(pd[:,10]))
+pvalue(JarqueBeraTest(tds))
+
+for i in 1:10
+    println(pvalue(JarqueBeraTest(pd[:,i])))
+end
+
