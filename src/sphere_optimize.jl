@@ -5,13 +5,13 @@ using Roots
 #using Distributed
 using Optim
 
-function y1(x)
+function y1(x::Vector{Float64})::Matrix{Float64}
     r1 = [cos(2*pi*s) for s in x]
     r2 = [sin(2*pi*s) for s in x]
     return hcat(r1, r2)
 end
 
-function y2(x, y)
+function y2(x::Vector{Float64}, y::Matrix{Float64})::Matrix{Float64}
     ya = y[:,1]
     yb = y[:,2]
     p1a = [sqrt(1 - (1 - 2*r)^2) * s for (r,s) in zip(x, ya)]
@@ -20,80 +20,68 @@ function y2(x, y)
     return hcat(p1a, p1b, p2)
 end
 
-function b_inside(a, b)
-    function tf(u)
+function b_inside(a::Float64, b::Float64)
+    function tf(u::Float64)
         return u^(a-1) * (1-u)^(b-1)
     end
     return tf
 end
 
-function bz(a, b, z)
+function bz(a::Float64, b::Float64, z::Float64)
     tf = b_inside(a,b)
     inte, err = quadgk(tf, 0, z, rtol=1e-3)
     return inte
 end
 
-function bd(a, b)
-    return bz(a,b,1)
+function bd(a::Float64, b::Float64)
+    return bz(a,b,float(1))
 end
 
-function hd(x, d)
+function hd(x::Float64, d::Float64)
     ix = bz(d/2, d/2, x) / bd(d/2, d/2)
     return ix
 end
 
-function hd_inv(y, d)
-    function tf(x)
-        return hd(x, d) - y
+function hd_inv(y::Float64, d::Int64)
+    function tf(x::Float64)
+        return hd(x, Float64(d)) - y
     end
     res = find_zero(tf, (0, 1))
     return res
 end
 
-function yd(x, y, d)
+function yd(x::Vector{Float64}, y::Matrix{Float64}, d::Int64)
     nr, nc = size(y)
     pr = [sqrt(1 - (1 - 2*hd_inv(r, d))^2) for r in x]
-    res =[]
+    res = zeros(nr, nc)
     for i in 1:nc
         ty = y[:,i]
         tp = [r * s for (r,s) in zip(pr, ty)]
-        append!(res, tp)
+        res[:,i] = tp
+        #append!(res, tp)
     end
-    tres = reshape(res, (nr, nc))
-    p2 = [1 - 2*hd_inv(r, d) for r in x]
-    return hcat(tres, p2)
-end
-
-function ydp(x, y, d)
-    nr, nc = size(y)
-    pr = [sqrt(1 - (1 - 2*hd_inv(r, d))^2) for r in x]
-    res =[]
-    for i in 1:nc
-        ty = y[:,i]
-        tp = [r * s for (r,s) in zip(pr, ty)]
-        append!(res, tp)
-    end
-    res = reshape(res, (nr, nc))
+    #tres = reshape(res, (nr, nc))
     p2 = [1 - 2*hd_inv(r, d) for r in x]
     return hcat(res, p2)
 end
 
 
-function gen_Sphere(N, d)
+
+function gen_Sphere(N::Int, d::Int)::Matrix
     s = SobolSeq(d-1)
-    rds = hcat([next!(s) for i = 1:N] ...)'
-    prj1 = y1(rds[:,1])
-    prj2 = y2(rds[:,2], prj1)
-    tp = prj2
+    rds::Matrix{Float64} = hcat([next!(s) for i = 1:N] ...)'
+    prj1::Matrix{Float64} = y1(rds[:,1])
+    prj2::Matrix{Float64} = y2(rds[:,2], prj1)
+    tp::Matrix{Float64} = prj2
     for j in 3:(d-1)
-        np = yd(rds[:,j], tp, j)
+        np::Matrix = yd(rds[:,j], tp, j)
         tp = np
     end
     return tp
 end
 
 
-function regularized_Theta(ang)
+function regularized_Theta(ang::Float64)
     ang = ang % (2*pi)
     while ang < 0
         ang += 2*pi
@@ -102,7 +90,7 @@ function regularized_Theta(ang)
     return ang
 end
 
-function med_from_Sphere(theta, i)
+function med_from_Sphere(theta::Vector{Float64}, i::Int64)
     res = 1
     if i <= length(theta)
         temp_theta = theta[1:i]
@@ -124,7 +112,7 @@ function med_from_Sphere(theta, i)
     return res
 end
 
-function from_Sphere(theta)
+function from_Sphere(theta::Vector{Float64})
     s = zeros(length(theta)+1)
     for k in 1:length(theta)
         theta[k] = regularized_Theta(theta[k])
@@ -136,7 +124,7 @@ function from_Sphere(theta)
 end
 
 
-function to_Sphere(s)
+function to_Sphere(s::Vector{Float64})
     theta = zeros(length(s)-1)
     theta[1] = acos(s[1])
     for i in 2:length(theta)
