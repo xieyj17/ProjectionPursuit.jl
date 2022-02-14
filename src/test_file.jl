@@ -12,24 +12,24 @@ cov_mat = Matrix(randP(10));
 n=10
 diag = rand(Uniform(6,10), n)
 Q, _ = qr(randn(n, n)); 
-D = Diagonal(diag); 
-cov_mat = Q*D*Q'
+D = Diagonal(n:-1:1); 
+cov_mat = Q*D*Q';
 
-cov_mat = Float32.(cov_mat)
+cov_mat = Float64.(cov_mat)
 
-d = MvNormal(zeros(10), cov_mat);
+d = MvNormal(zeros(n), D);
 
 dat = rand(d, 100);
 
 
-td = TDist(2);
+td = TDist(5);
 tds = rand(td, 100);
 
 ndat = hcat(dat', tds);
 
 
 using MultivariateStats
-M = fit(PCA, ndat; maxoutdim=10)
+M = fit(PCA, ndat; pratio=0.9)
 pd = projection(M);
 
 using HypothesisTests
@@ -41,7 +41,9 @@ s.JB
 pvalue(JarqueBeraTest(pd[:,10]))
 pvalue(JarqueBeraTest(tds))
 
-for i in 1:10
+for i in 1:28
     println(pvalue(JarqueBeraTest(pd[:,i])))
 end
+
+
 
