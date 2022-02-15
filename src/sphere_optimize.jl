@@ -1,4 +1,3 @@
-#using Distributions
 using Sobol
 using QuadGK
 using Roots
@@ -148,7 +147,7 @@ struct Sphere_Optimize_Res
     s::Vector{Float64}
 end
 
-@everywhere function Sphere_Optimize(data::Matrix{Float64}, s::Vector{Float64}, object_fun::Function;fnscale::Int64=-1)
+function Sphere_Optimize(data::Matrix{Float64}, s::Vector{Float64}, object_fun::Function;fnscale::Int64=-1)
     theta = ToSphere(s)
     RegularizedTheta!(theta)
     temp_fn(theta) = object_fun(data, FromSphere(theta))*fnscale
@@ -157,5 +156,4 @@ end
     RegularizedTheta!(ntheta) 
     return Sphere_Optimize_Res(object_fun(data, FromSphere(ntheta)), FromSphere(ntheta))
 end
-
 
