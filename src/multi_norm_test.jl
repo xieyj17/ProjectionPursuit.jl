@@ -54,7 +54,7 @@ function snu(dat::Matrix{Float64}, dir::Vector{Float64})::Float64
     return n*sk/6
 end
 
-function knu(dat::Matrix{Float64}, dir::Vector{Float64})::Float64
+@everywhere function knu(dat::Matrix{Float64}, dir::Vector{Float64})::Float64
     n, _ = size(dat)
     proj = dat * dir
     ku = abs(kurtosis(proj))

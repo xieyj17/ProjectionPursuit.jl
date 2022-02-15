@@ -148,7 +148,7 @@ struct Sphere_Optimize_Res
     s::Vector{Float64}
 end
 
-function Sphere_Optimize(data::Matrix{Float64}, s::Vector{Float64}, object_fun::Function;fnscale::Int64=-1)
+@everywhere function Sphere_Optimize(data::Matrix{Float64}, s::Vector{Float64}, object_fun::Function;fnscale::Int64=-1)
     theta = ToSphere(s)
     RegularizedTheta!(theta)
     temp_fn(theta) = object_fun(data, FromSphere(theta))*fnscale
