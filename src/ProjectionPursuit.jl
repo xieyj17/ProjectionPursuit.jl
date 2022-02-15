@@ -1,8 +1,5 @@
 module ProjectionPursuit
 
-@everywhere using Pkg
-@everywhere Pkg.instantiate()
-using Distributed
 include("sphere_optimize.jl")
 
 # Write your package code here.

@@ -68,12 +68,12 @@ end
 
 function GenSphere(N::Int, d::Int)::Matrix
     s = SobolSeq(d-1)
-    rds::Matrix{Float64} = hcat([next!(s) for i = 1:N] ...)'
-    prj1::Matrix{Float64} = y1(rds[:,1])
-    prj2::Matrix{Float64} = y2(rds[:,2], prj1)
-    tp::Matrix{Float64} = prj2
+    rds = hcat([next!(s) for i = 1:N] ...)'
+    prj1 = y1(rds[:,1])
+    prj2 = y2(rds[:,2], prj1)
+    tp = prj2
     for j in 3:(d-1)
-        np::Matrix = yd(rds[:,j], tp, j)
+        np = yd(rds[:,j], tp, j)
         tp = np
     end
     return tp

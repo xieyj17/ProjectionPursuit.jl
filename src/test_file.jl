@@ -53,8 +53,8 @@ inner_optimizer = GradientDescent()
 results = optimize(temp_fn, lower, upper, initial_x, Fminbox(inner_optimizer))
 
 
-@time res=Projection_Pursuit(ndat,knu;par=true)
-
+@time res=Projection_Pursuit(ndat,knu;par=false)
+@time unit_sphere= GenSphere(n^2, p);
 function tf(i)
     sleep(i)
     return i+1
