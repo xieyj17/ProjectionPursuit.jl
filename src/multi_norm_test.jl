@@ -8,7 +8,7 @@ struct GHHK_res
     pvalue::Float64
 end
 
-function GHHK(dat::Matrix, α::Float64=0.05, pratio::Float64=0.9)
+function GHHK(dat::Matrix{Float64}, α::Float64=0.05, pratio::Float64=0.9)
     M = fit(PCA, dat'; pratio=pratio)
     pca_proj = dat * M.proj
     n, p = size(pca_proj)
@@ -32,7 +32,7 @@ struct MAX_res
     pvalue::Float64
 end
 
-function MAX(dat::Matrix, α::Float64=0.95, pratio::Float64=0.9)
+function MAX(dat::Matrix{Float64}, α::Float64=0.95, pratio::Float64=0.9)
     M = fit(PCA, dat'; pratio=pratio)
     pca_proj = dat * M.proj
     n, p = size(pca_proj)
@@ -47,21 +47,21 @@ function MAX(dat::Matrix, α::Float64=0.95, pratio::Float64=0.9)
     return MAX_res(test_stat, critical_value, pvalue)
 end
 
-function snu(dat::Matrix, dir::Vector)::Float64
+function snu(dat::Matrix{Float64}, dir::Vector{Float64})::Float64
     n, _ = size(dat)
     proj = dat * dir
     sk = skewness(proj)^2
     return n*sk/6
 end
 
-function knu(dat::Matrix, dir::Vector)::Float64
+function knu(dat::Matrix{Float64}, dir::Vector{Float64})::Float64
     n, _ = size(dat)
     proj = dat * dir
     ku = abs(kurtosis(proj))
     return sqrt(n/24)*ku
 end
 
-function sim_dummy_dat(dat::Matrix, B=1000)
+function sim_dummy_dat(dat::Matrix{Float64}, B=1000)
     n, p = size(dat)
     sks = zeros(B)
     kus = zeros(B)

@@ -46,4 +46,13 @@ for i in 1:28
 end
 
 
+lower = [t - 0.2*π for t in theta]
+lower = [maximum([t, 0]) for t in lower]
+upper = [t + 0.2*π for t in theta]
+upper = [minimum([t, 2*π]) for t in upper]
 
+inner_optimizer = GradientDescent()
+results = optimize(temp_fn, lower, upper, initial_x, Fminbox(inner_optimizer))
+
+
+res=Projection_Pursuit(ndat,knu)

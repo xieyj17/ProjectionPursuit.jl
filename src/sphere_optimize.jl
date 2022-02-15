@@ -67,7 +67,7 @@ end
 
 
 
-function gen_Sphere(N::Int, d::Int)::Matrix
+function GenSphere(N::Int, d::Int)::Matrix
     s = SobolSeq(d-1)
     rds::Matrix{Float64} = hcat([next!(s) for i = 1:N] ...)'
     prj1::Matrix{Float64} = y1(rds[:,1])
@@ -81,16 +81,21 @@ function gen_Sphere(N::Int, d::Int)::Matrix
 end
 
 
-function regularized_Theta(ang::Float64)
-    ang = ang % (2*pi)
-    while ang < 0
-        ang += 2*pi
+function RegularizedTheta!(theta::Vector{Float64})
+    n = length(theta)
+    for i in 1:(n-1)
+        while theta[i] < 0
+            theta[i] += π
+        end
+        theta[i] = theta[i] % π
     end
-    ang = ang % (2*pi)
-    return ang
+    while theta[n] < 0
+        theta[n] += 2*π
+    end
+    theta[n] = theta[n] % π
 end
 
-function med_from_Sphere(theta::Vector{Float64}, i::Int64)
+function MedFromSphere(theta::Vector{Float64}, i::Int64)
     res = 1
     if i <= length(theta)
         temp_theta = theta[1:i]
@@ -98,60 +103,59 @@ function med_from_Sphere(theta::Vector{Float64}, i::Int64)
             res = cos(temp_theta[1])
         else
             for p in 1:(i-1)
-                res = res * sin(temp_theta[p])
+                res *= sin(temp_theta[p])
             end
-            res = res * cos(temp_theta[i])
+            res *= cos(temp_theta[i])
         end
     else
         temp_theta = theta
-        for p in 1:(i-2)
+        for p in 1:(i-1)
             res *= sin(temp_theta[p])
         end
-        res = res * cos(temp_theta[i-1])
     end
     return res
 end
 
-function from_Sphere(theta::Vector{Float64})
+function FromSphere(theta::Vector{Float64})
     s = zeros(length(theta)+1)
-    for k in 1:length(theta)
-        theta[k] = regularized_Theta(theta[k])
-    end
+    RegularizedTheta!(theta)
     for i in 1:length(s)
-        s[i] = med_from_Sphere(theta, i)
+        s[i] = MedFromSphere(theta, i)
     end
     return s
 end
 
 
-function to_Sphere(s::Vector{Float64})
-    theta = zeros(length(s)-1)
-    theta[1] = acos(s[1])
-    for i in 2:length(theta)
-        theta[i] = acos(s[i] / sqrt(sum([w^2 for w in s[i:length(s)]])))
+function ToSphere(s::Vector{Float64})
+    n = length(s)
+    theta = zeros(n-1)
+    
+    for i in 1:(n-1)
+        ts = s[i:n]
+        theta[i] = acos(s[i] / sqrt(sum(ts.^2)))
     end
-    if s[length(s)] < 0
-        theta[length(theta)] = 2*pi - theta[length(theta)]
+
+    if s[n] < 0
+        theta[n-1] = 2*π - theta[n-1]
     end
-    if ismissing(theta)
-        theta[[ismissing(x) for x in theta]] = 0
-    end
+    
     return theta
 end
 
-function Sphere_Optimize(par, fn, neighbor = NaN)
-    function temp_fn(t)
-        s = from_Sphere(t)
-        res = fn(s)
-        return res
-    end
 
-    theta = to_Sphere(par)
+struct Sphere_Optimize_Res
+    var::Float64
+    s::Vector{Float64}
+end
+
+function Sphere_Optimize(data::Matrix{Float64}, s::Vector{Float64}, object_fun::Function;fnscale::Int64=-1)
+    theta = ToSphere(s)
+    RegularizedTheta!(theta)
+    temp_fn(theta) = object_fun(data, FromSphere(theta))*fnscale
     k = optimize(temp_fn, theta, LBFGS())
     ntheta = Optim.minimizer(k)
-    ntheta = [regularized_Theta(t) for t in ntheta]
-    par = to_Sphere(ntheta)
-    nv = Optim.minimum(k)
-
-    return nv
+    RegularizedTheta!(ntheta) 
+    return Sphere_Optimize_Res(object_fun(data, FromSphere(ntheta)), FromSphere(ntheta))
 end
+
+
