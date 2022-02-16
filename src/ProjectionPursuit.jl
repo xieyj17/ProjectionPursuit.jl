@@ -4,10 +4,15 @@ include("sphere_optimize.jl")
 
 # Write your package code here.
 
-function Projection_Pursuit(data::Matrix{Float64}, object_fun::Function; n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, par::Bool=true)
+function Projection_Pursuit(data::Matrix{Float64}, object_fun::Function; 
+    n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, par::Bool=true, fast::Bool=true)
     n, p = size(data)
     if isnothing(unit_sphere)
-        unit_sphere= GenSphere(n^2, p)
+        if fast
+            unit_sphere= FastGenSphere(n^2, p;par)
+        else
+            unit_sphere= GenSphere(n^2, p)
+        end
     end
 
     if par
@@ -16,6 +21,7 @@ function Projection_Pursuit(data::Matrix{Float64}, object_fun::Function; n_of_ca
         @sync for i in 1:nu
             Threads.@spawn r[i] = object_fun(data, unit_sphere[i,:])
         end
+        r = map(x-> isnan(x) ? 0 : x, r)
         r = Vector{Float64}(r)
     else
         r = map(x->object_fun(data, Vector(x)), eachrow(unit_sphere))

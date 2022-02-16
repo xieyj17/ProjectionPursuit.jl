@@ -66,7 +66,7 @@ end
 
 
 
-function GenSphere(N::Int, d::Int)::Matrix
+function GenSphere(N::Int64, d::Int64)::Matrix{Float64}
     s = SobolSeq(d-1)
     rds = hcat([next!(s) for i = 1:N] ...)'
     prj1 = y1(rds[:,1])
@@ -79,6 +79,23 @@ function GenSphere(N::Int, d::Int)::Matrix
     return tp
 end
 
+function FastGenSphere(N::Int64, d::Int64; par::Bool=true)::Matrix{Float64}
+    eps=1e-10
+    s = SobolSeq(d)
+    rds = hcat([next!(s) for i = 1:N] ...)'
+    rds = (rds .*2).-1 
+    tp = Matrix{Float64}(undef, (N,d))
+    if par
+        @sync for j in 1:N
+            Threads.@spawn tp[j,:] = (rds[j,:].+eps) ./ sqrt(sum(rds[j,:].^2).+eps)
+        end
+    else
+        for j in 1:N
+            tp[j,:] = (rds[j,:].+eps) ./ sqrt(sum(rds[j,:].^2).+eps)
+        end
+    end
+    return tp
+end
 
 function RegularizedTheta!(theta::Vector{Float64})
     n = length(theta)

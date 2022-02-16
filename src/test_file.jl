@@ -53,46 +53,14 @@ inner_optimizer = GradientDescent()
 results = optimize(temp_fn, lower, upper, initial_x, Fminbox(inner_optimizer))
 
 
-@time res=Projection_Pursuit(ndat,knu;par=false)
-@time unit_sphere= GenSphere(n^2, p);
-function tf(i)
-    sleep(i)
-    return i+1
-end
+@btime res=Projection_Pursuit(ndat,knu; par=false,fast=false)
+@btime res=Projection_Pursuit(ndat,knu; par=true,fast=false)
+@btime res=Projection_Pursuit(ndat,knu; par=false,fast=true)
+@btime res=Projection_Pursuit(ndat,knu; par=true,fast=true)
 
-res = zeros(10)
-@time begin
-    @sync for i in 1:10
-        Threads.@spawn res[i] = tf(i)
-    end
-end
+@time unit_sphere= FastGenSphere(n^2, p);
 
-@time begin
-    for i in 1:10
-        tr = tf(i)
-        res[i] = tr
-    end
-end
+using Plots
 
-
-function task()
-    x = rand(0.001:0.001:0.05)  # Generate a variable workload
-    sleep(x)  # Sleep simulates the workload
-    return x  # Return the workload
-end
-@time begin
-    n = 1000  # Number of tasks
-    p = zeros(Threads.nthreads())  # Total workload per thread
-    @sync for i in 1:n
-        Threads.@spawn p[Threads.threadid()] += task()  # Spawn tasks and sum the workload
-    end
-end
-
-@time begin
-    n = 1000  # Number of tasks
-    p = zeros(Threads.nthreads())  # Total workload per thread
-    for i in 1:n
-        p[i%4+1] += task()  # Spawn tasks and sum the workload
-    end
-end
-
+scatter(tp[:,1],tp[:,2],markersize=3,alpha=.8,legend=false)
+histogram(rds)
