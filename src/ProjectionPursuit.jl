@@ -49,7 +49,7 @@ function Projection_Pursuit(data::Matrix{Float64}, object_fun::Function;
 end
 
 
-export Projection_Pursuit, Sphere_Optimize, ToSphere, FromSphere, GenSphere,
+export Projection_Pursuit, Sphere_Optimize, ToSphere, FromSphere, GenSphere, FastGenSphere,
         Sphere_Optimize_Res
 
 end
