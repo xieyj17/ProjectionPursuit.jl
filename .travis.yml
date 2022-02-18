@@ -9,6 +9,7 @@ branches:
 coveralls: true
 notifications:
   email: false
+<<<<<<< HEAD:travis.yml
 jobs:
   include:
     - stage: "Documentation"
@@ -19,3 +20,5 @@ jobs:
                                     Pkg.develop(PackageSpec(path-pwd()))'
         - julia --project-docs/ docs/make.jl
       after_success: skip
+=======
+>>>>>>> 6c6ba159533f3ca4f94e0348c51fb9b310375589:.travis.yml
