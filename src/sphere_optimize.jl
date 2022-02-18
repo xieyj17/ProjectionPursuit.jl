@@ -86,11 +86,11 @@ function fastgensphere(N::Int64, d::Int64; par::Bool=true)::Matrix{Float64}
     tp = Matrix{Float64}(undef, (N,d))
     if par
         @sync for j in 2:(N+1)
-            Threads.@spawn tp[(j-1),:] = (rds[j,:].+eps) ./ sqrt(sum(rds[j,:].^2).+eps)
+            Threads.@spawn tp[(j-1),:] = (rds[j,:]) ./ sqrt(sum(rds[j,:].^2).+eps)
         end
     else
         for j in 2:(N+1)
-            tp[(j-1),:] = (rds[j,:].+eps) ./ sqrt(sum(rds[j,:].^2).+eps)
+            tp[(j-1),:] = (rds[j,:]) ./ sqrt(sum(rds[j,:].^2).+eps)
         end
     end
     return tp
@@ -166,11 +166,11 @@ function _residualsphere(sphere::Matrix{Float64}, dir::Vector{Float64};par=true)
     end
     if par
         @sync for j in 1:size(sphere)[1]
-            Threads.@spawn residuals[j,:] = (residuals[j,:].+eps) ./ sqrt(sum(residuals[j,:].^2).+eps)
+            Threads.@spawn residuals[j,:] = (residuals[j,:]) ./ sqrt(sum(residuals[j,:].^2).+eps)
         end
     else
         for j in 1:size(sphere)[1]
-            residuals[j,:] = (residuals[j,:].+eps) ./ sqrt(sum(residuals[j,:].^2).+eps)
+            residuals[j,:] = (residuals[j,:]) ./ sqrt(sum(residuals[j,:].^2).+eps)
         end
     end
     return residuals
