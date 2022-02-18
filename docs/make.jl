@@ -19,6 +19,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/xieyj17/ProjectionPursuit.jl",
+    repo="github.com/xieyj17/ProjectionPursuit.jl.git",
     devbranch="main",
 )
