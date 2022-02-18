@@ -3,8 +3,6 @@ using Documenter
 
 DocMeta.setdocmeta!(ProjectionPursuit, :DocTestSetup, :(using ProjectionPursuit); recursive=true)
 
-using Documenter
-using Demo
 makedocs(
     modules=[ProjectionPursuit],
     authors="Yijun Xie",
