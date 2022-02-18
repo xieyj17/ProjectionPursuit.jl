@@ -3,7 +3,9 @@ using Documenter
 
 DocMeta.setdocmeta!(ProjectionPursuit, :DocTestSetup, :(using ProjectionPursuit); recursive=true)
 
-makedocs(;
+using Documenter
+using Demo
+makedocs(
     modules=[ProjectionPursuit],
     authors="Yijun Xie",
     repo="https://github.com/xieyj17/ProjectionPursuit.jl/blob/{commit}{path}#{line}",
@@ -17,8 +19,12 @@ makedocs(;
         "Home" => "index.md",
     ],
 )
-
-deploydocs(;
-    repo="github.com/xieyj17/ProjectionPursuit.jl.git",
-    devbranch="main",
+# Documenter can also automatically deploy documentation to gh-pages.
+# See "Hosting Documentation" and deploydocs() in the Documenter manual
+# for more information.
+#=deploydocs(
+    repo = "<repository url>"
+)=#
+deploydocs(
+    repo = "github.com/xieyj17/ProjectionPursuit.jl.git"
 )
