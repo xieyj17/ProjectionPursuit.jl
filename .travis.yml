@@ -11,6 +11,11 @@ notifications:
   email: false
 jobs:
   include:
+    - stage: "Test"
+      julia: 1.7
+      os: linux
+      script:
+        - julia --code-coverage test/runtests.jl
     - stage: "Documentation"
       julia: 1.7
       os: linux
@@ -19,5 +24,4 @@ jobs:
                                     Pkg.instantiate();                                    
                                     Pkg.add(PackageSpec(path=pwd()))'
         - julia --project=docs/ docs/make.jl
-      after_success:
-        - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+      after_success: skip
