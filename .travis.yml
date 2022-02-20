@@ -6,6 +6,7 @@ julia:
 branches:
   only:
     - main
+codecov: true
 coveralls: true
 notifications:
   email: false
