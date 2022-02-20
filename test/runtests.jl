@@ -1,5 +1,9 @@
+using Pkg
+Pkg.instantiate()
+
 using ProjectionPursuit
 using Test
+
 
 include("test_gensphere.jl")
 include("test_projection_pursuit.jl")
