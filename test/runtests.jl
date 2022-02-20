@@ -1,6 +1,5 @@
 using ProjectionPursuit
 using Test
 
-@testset "ProjectionPursuit.jl" begin
-    @test true
-end
+include("test_gensphere.jl")
+include("test_projection_pursuit.jl")
