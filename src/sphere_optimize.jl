@@ -72,8 +72,10 @@ Generate low discrepancy sequences of length N on a d dimension unit sphere.
 Roughly speaking, a low discrepancy sequence is a sequence of samples of a random variable
     has the property that the number of points within a region is proportional to the size
     of the region.
+
 This function returns a N-by-d matrix, where each row represents a sample of a random 
     vector that is uniformly distributed on a d-dimensional unit sphere.
+
 This function is based on Brauchart, Johann S., Josef Dick, and Lou Fang. 
     "Spatial low-discrepancy sequences, spherical cone discrepancy,
      and applications in financial modeling." 
@@ -92,6 +94,15 @@ function gensphere(N::Int64, d::Int64)::Matrix{Float64}
     end
     return tp
 end
+
+"""
+    fastgensphere(N::Int64, d::Int64; par::Bool=true)
+
+A faster way to generate lds of length N on a d dimension unit sphere.
+
+Similar to `gensphere()`. This function is much faster, but may
+ degenarate when d is large.
+"""
 
 function fastgensphere(N::Int64, d::Int64; par::Bool=true)::Matrix{Float64}
     eps=1e-10
@@ -146,6 +157,15 @@ function _medfromsphere(theta::Vector{Float64}, i::Int64)
     return res
 end
 
+"""
+    fromsphere(theta::Vector{Float64})
+
+Transform a d-dimensional spherical coordinate to the corresponding
+d+1 Cartesian coordinate.
+
+See also [`tosphere`](@ref tosphere).
+"""
+
 function fromsphere(theta::Vector{Float64})
     s = zeros(length(theta)+1)
     _regularizedtheta!(theta)
@@ -155,6 +175,14 @@ function fromsphere(theta::Vector{Float64})
     return s
 end
 
+"""
+    tosphere(s::Vector{Float64})
+
+Transform a d-dimensional Cartesian coordinate to the corresponding
+d-1 spherical coordinate.
+
+See also [`fromsphere`](@ref fromsphere).
+"""
 
 function tosphere(s::Vector{Float64})
     n = length(s)

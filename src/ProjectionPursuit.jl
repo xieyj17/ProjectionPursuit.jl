@@ -3,11 +3,44 @@ module ProjectionPursuit
 include("sphere_optimize.jl")
 
 # Write your package code here.
+"""
+    ProjectionPursuitRes
 
+Returned object of `projection_pursuit` or `sphere_optimize`.
+
+# Fields
+- `object_vals::Vector{Float64}`: projetion pursuit index. Analogous to eigenvalues in PCA.
+- `proj::Matrix{Float64}`: projetion pursuit direction. Analogous to eigenvectors in PCA.
+"""
 struct ProjectionPursuitRes
     object_vals::Vector{Float64}
     proj::Matrix{Float64}
 end
+
+"""
+    sphere_optimize(data::Matrix{Float64}, object_fun::Function; 
+    n_of_candidate::Int64=5 ,unit_sphere=nothing, proj=nothing, 
+    fnscale::Int64=-1, par::Bool=true, fast::Bool=true)
+
+Optimize a given objective fucntion constrained on a unit sphere.
+
+See http://hdl.handle.net/10012/16710 for more detail.
+
+# Arguments
+- `data::Matrix{Float64}`: each row contains an observation.
+- `object_fun::Function`: an arbitrary objective function defined on unit sphere.
+- `n_of_candidate::Int64=5`: number of candidate directions in the fine search step.
+- `unit_sphere=nothing`: the unit spehre can be pre-generated. By default a unit sphere
+    will be generated automatically.
+- `proj=nothing`: previously found projection directions. 
+    See [`projection_pursuit`](@ref projection_pursuit).
+- `fnscale::Int64=-1`: maximize or minimize the objective function. By default 
+    equals -1, which means maximize objective function. If the objective function
+    needs to be minimized, set to `fnscale=1`.
+- `par::Bool=true`: run the program in parallel. 
+- `fast::Bool=true`: generate the unit sphere using fast algorithm.
+    See [`gensphere`](@ref gensphere) and [`fastgensphere`](@ref fastgensphere).
+"""
 
 function sphere_optimize(data::Matrix{Float64}, object_fun::Function; 
     n_of_candidate::Int64=5 ,unit_sphere=nothing, proj=nothing, fnscale::Int64=-1, par::Bool=true, fast::Bool=true)
@@ -67,6 +100,31 @@ function sphere_optimize(data::Matrix{Float64}, object_fun::Function;
     return SphereOptimizeRes(max_var, s)
 end
 
+
+"""
+projection_pursuit(data::Matrix{Float64}, object_fun::Function, 
+    outdim::Int64=1; 
+    n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, 
+    par::Bool=true, fast::Bool=true)
+
+Conduct dimension reduction corresponding to specified objective function.
+
+See http://hdl.handle.net/10012/16710 for more detail.
+
+# Arguments
+- `data::Matrix{Float64}`: each row contains an observation.
+- `object_fun::Function`: an arbitrary objective function defined on unit sphere.
+- `outdim::Int64`: target dimension of the output.
+- `n_of_candidate::Int64=5`: number of candidate directions in the fine search step.
+- `unit_sphere=nothing`: the unit spehre can be pre-generated. By default a unit sphere
+    will be generated automatically.
+- `fnscale::Int64=-1`: maximize or minimize the objective function. By default 
+    equals -1, which means maximize objective function. If the objective function
+    needs to be minimized, set to `fnscale=1`.
+- `par::Bool=true`: run the program in parallel. 
+- `fast::Bool=true`: generate the unit sphere using fast algorithm.
+    See [`gensphere`](@ref gensphere) and [`fastgensphere`](@ref fastgensphere).
+"""
 
 function projection_pursuit(data::Matrix{Float64}, object_fun::Function, outdim::Int64=1; 
     n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, par::Bool=true, fast::Bool=true)

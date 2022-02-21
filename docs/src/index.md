@@ -12,7 +12,12 @@ Documentation for [ProjectionPursuit](https://github.com/xieyj17/ProjectionPursu
 ## Functions
 
 ```@docs
-gensphere(x)
+gensphere
+tosphere
+fromsphere
+ProjectionPursuitRes
+sphere_optimize
+projection_pursuit
 ```
 
 ## Index
