@@ -17,9 +17,7 @@ struct ProjectionPursuitRes
 end
 
 """
-    sphere_optimize(data::Matrix{Float64}, object_fun::Function; 
-    n_of_candidate::Int64=5 ,unit_sphere=nothing, proj=nothing, 
-    fnscale::Int64=-1, par::Bool=true, fast::Bool=true)
+    sphere_optimize(data, object_fun)
 
 Optimize a given objective fucntion constrained on a unit sphere.
 
@@ -100,10 +98,7 @@ end
 
 
 """
-    projection_pursuit(data::Matrix{Float64}, object_fun::Function, 
-    outdim::Int64=1; 
-    n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, 
-    par::Bool=true, fast::Bool=true)
+    projection_pursuit(data, object_fun, outdim)
 
 Conduct dimension reduction corresponding to specified objective function.
 

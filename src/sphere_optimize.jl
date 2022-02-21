@@ -76,7 +76,7 @@ Roughly speaking, a low discrepancy sequence is a sequence of samples of a rando
 This function returns a N-by-d matrix, where each row represents a sample of a random 
     vector that is uniformly distributed on a d-dimensional unit sphere.
 
-This function is based on Brauchart, Johann S., Josef Dick, and Lou Fang. 
+See Brauchart, Johann S., Josef Dick, and Lou Fang. 
     "Spatial low-discrepancy sequences, spherical cone discrepancy,
      and applications in financial modeling." 
      Journal of Computational and Applied Mathematics 286 (2015): 28-53.
