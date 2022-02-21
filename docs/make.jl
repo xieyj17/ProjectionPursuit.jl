@@ -24,5 +24,7 @@ makedocs(
     repo = "<repository url>"
 )=#
 deploydocs(
-    repo = "github.com/xieyj17/ProjectionPursuit.jl.git"
+    repo = "github.com/xieyj17/ProjectionPursuit.jl.git",
+    devurl = "stable",
+    versions = nothing
 )
