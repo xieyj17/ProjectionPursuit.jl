@@ -10,19 +10,19 @@ codecov: true
 coveralls: true
 notifications:
   email: false
-# jobs:
-#   include:
-#     - stage: "Test"
-#       julia: 1.7
-#       os: linux
-#       script:
-#         - julia --code-coverage test/runtests.jl
-#     - stage: "Documentation"
-#       julia: 1.7
-#       os: linux
-#       script:
-#         - julia --project=docs/ -e 'using Pkg;Pkg.add(url="https://github.com/xieyj17/ProjectionPursuit.jl");
-#                                     Pkg.instantiate();                                    
-#                                     Pkg.add(PackageSpec(path=pwd()))'
-#         - julia --project=docs/ docs/make.jl
-#       after_success: skip
+jobs:
+  include:
+    # - stage: "Test"
+    #   julia: 1.7
+    #   os: linux
+    #   script:
+    #     - julia --code-coverage test/runtests.jl
+    - stage: "Documentation"
+      julia: 1.7
+      os: linux
+      script:
+        - julia --project=docs/ -e 'using Pkg;Pkg.add(url="https://github.com/xieyj17/ProjectionPursuit.jl");
+                                    Pkg.instantiate();                                    
+                                    Pkg.add(PackageSpec(path=pwd()))'
+        - julia --project=docs/ docs/make.jl
+      after_success: skip
