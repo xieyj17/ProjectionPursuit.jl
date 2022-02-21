@@ -14,10 +14,10 @@ Random.seed!(12345)
 N=200
 td = Gamma(1,1);
 tds = rand(td, N);
-n=10
-diag = collect(n:-1:1)
-diag = diag.^2
-D = Diagonal(diag); 
+n=10;
+diag = collect(n:-1:1);
+diag = diag.^2;
+D = Matrix(Diagonal(diag)); 
 d = MvNormal(zeros(n), D);
 dat = rand(d, N);
 ndat = hcat(dat', tds);
