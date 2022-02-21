@@ -100,8 +100,8 @@ end
 
 A faster way to generate lds of length N on a d dimension unit sphere.
 
-Similar to `gensphere()`. This function is much faster, but may
- degenarate when d is large.
+Similar to `gensphere()`. This function is much faster and support parallelism, 
+but may degenarate when d is large.
 """
 
 function fastgensphere(N::Int64, d::Int64; par::Bool=true)::Matrix{Float64}

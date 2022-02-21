@@ -12,19 +12,16 @@ Documentation for [ProjectionPursuit](https://github.com/xieyj17/ProjectionPursu
 ## Functions
 
 ```@docs
-gensphere
-tosphere
-fromsphere
-ProjectionPursuitRes
-sphere_optimize
-projection_pursuit
+gensphere(N::Int64, d::Int64)
+fastgensphere(N::Int64, d::Int64; par::Bool=true)
+fromsphere(theta::Vector{Float64})
+tosphere(s::Vector{Float64})
+ProjectionPursuitRes(object_vals, proj)
+sphere_optimize(data, object_fun)
+projection_pursuit(data, object_fun, outdim)
 ```
 
 ## Index
 
 ```@index
-```
-
-```@autodocs
-Modules = [ProjectionPursuit]
 ```

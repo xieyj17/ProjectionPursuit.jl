@@ -4,7 +4,7 @@ include("sphere_optimize.jl")
 
 # Write your package code here.
 """
-    ProjectionPursuitRes
+    ProjectionPursuitRes(object_vals, proj)
 
 Returned object of `projection_pursuit` or `sphere_optimize`.
 
@@ -102,7 +102,7 @@ end
 
 
 """
-projection_pursuit(data::Matrix{Float64}, object_fun::Function, 
+    projection_pursuit(data::Matrix{Float64}, object_fun::Function, 
     outdim::Int64=1; 
     n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, 
     par::Bool=true, fast::Bool=true)
