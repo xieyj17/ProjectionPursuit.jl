@@ -10,19 +10,38 @@ codecov: true
 coveralls: true
 notifications:
   email: false
-jobs:
-  include:
-    # - stage: "Test"
-    #   julia: 1.7
-    #   os: linux
-    #   script:
-    #     - julia --code-coverage test/runtests.jl
-    - stage: "Documentation"
-      julia: 1.7
-      os: linux
-      script:
-        - julia --project=docs/ -e 'using Pkg;Pkg.add(url="https://github.com/xieyj17/ProjectionPursuit.jl");
-                                    Pkg.instantiate();                                    
-                                    Pkg.add(PackageSpec(path=pwd()))'
-        - julia --project=docs/ docs/make.jl
-      after_success: skip
+# refer to https://github.com/sisl/NeuralVerification.jl/blob/master/.travis.yml
+script:
+  - julia --project --check-bounds=yes -e 'import Pkg; Pkg.build(); Pkg.test("ProjectionPursuit"; coverage=true)'
+
+# After successful build submit coverage report and deploy updated documentation
+# But limit deployment to the linux worker so this is done only once.
+after_success:
+  # Install required packages for coverage and documentation
+  - julia --project -e 'import Pkg; Pkg.add("Coverage");'
+  - julia --project -e 'import Pkg; Pkg.add("Documenter"); Pkg.add("DocumenterTools");'
+#  - julia --project -e 'import Pkg; Pkg.add("Plots");'
+#  - julia --project -e 'import Pkg; Pkg.add("LaTeXStrings")'
+
+  # Submit test coverage report
+  - julia --project -e 'using Coverage; Coveralls.submit(Coveralls.process_folder())'
+
+  # Build and deploy documentation
+  - julia --project ./docs/make.jl
+
+# jobs:
+#   include:
+#     # - stage: "Test"
+#     #   julia: 1.7
+#     #   os: linux
+#     #   script:
+#     #     - julia --code-coverage test/runtests.jl
+#     - stage: "Documentation"
+#       julia: 1.7
+#       os: linux
+#       script:
+#         - julia --project=docs/ -e 'using Pkg;Pkg.add(url="https://github.com/xieyj17/ProjectionPursuit.jl");
+#                                     Pkg.instantiate();                                    
+#                                     Pkg.add(PackageSpec(path=pwd()))'
+#         - julia --project=docs/ docs/make.jl
+#       after_success: skip
