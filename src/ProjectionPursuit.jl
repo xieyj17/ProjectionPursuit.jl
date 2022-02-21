@@ -3,7 +3,7 @@ module ProjectionPursuit
 include("sphere_optimize.jl")
 
 """
-    ProjectionPursuitRes(object_vals, proj)
+    ProjectionPursuitRes
 
 Returned object of `projection_pursuit` or `sphere_optimize`.
 
