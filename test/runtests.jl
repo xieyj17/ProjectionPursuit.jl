@@ -1,7 +1,3 @@
-using Pkg
-Pkg.add(url="https://github.com/xieyj17/ProjectionPursuit.jl")
-Pkg.instantiate()
-
 using ProjectionPursuit
 using Test
 
