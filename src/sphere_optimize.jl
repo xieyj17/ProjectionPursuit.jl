@@ -103,7 +103,6 @@ A faster way to generate lds of length N on a d dimension unit sphere.
 Similar to `gensphere()`. This function is much faster and support parallelism, 
 but may degenarate when d is large.
 """
-
 function fastgensphere(N::Int64, d::Int64; par::Bool=true)::Matrix{Float64}
     eps=1e-10
     s = SobolSeq(d)
@@ -165,7 +164,6 @@ d+1 Cartesian coordinate.
 
 See also [`tosphere`](@ref tosphere).
 """
-
 function fromsphere(theta::Vector{Float64})
     s = zeros(length(theta)+1)
     _regularizedtheta!(theta)
@@ -183,7 +181,6 @@ d-1 spherical coordinate.
 
 See also [`fromsphere`](@ref fromsphere).
 """
-
 function tosphere(s::Vector{Float64})
     n = length(s)
     theta = zeros(n-1)

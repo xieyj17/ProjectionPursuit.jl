@@ -2,7 +2,6 @@ module ProjectionPursuit
 
 include("sphere_optimize.jl")
 
-# Write your package code here.
 """
     ProjectionPursuitRes(object_vals, proj)
 
@@ -41,7 +40,6 @@ See http://hdl.handle.net/10012/16710 for more detail.
 - `fast::Bool=true`: generate the unit sphere using fast algorithm.
     See [`gensphere`](@ref gensphere) and [`fastgensphere`](@ref fastgensphere).
 """
-
 function sphere_optimize(data::Matrix{Float64}, object_fun::Function; 
     n_of_candidate::Int64=5 ,unit_sphere=nothing, proj=nothing, fnscale::Int64=-1, par::Bool=true, fast::Bool=true)
     n, p = size(data)
@@ -125,7 +123,6 @@ See http://hdl.handle.net/10012/16710 for more detail.
 - `fast::Bool=true`: generate the unit sphere using fast algorithm.
     See [`gensphere`](@ref gensphere) and [`fastgensphere`](@ref fastgensphere).
 """
-
 function projection_pursuit(data::Matrix{Float64}, object_fun::Function, outdim::Int64=1; 
     n_of_candidate::Int64=5 ,unit_sphere=nothing, fnscale::Int64=-1, par::Bool=true, fast::Bool=true)
 
