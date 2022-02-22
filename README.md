@@ -23,19 +23,15 @@ This terminology might be new to you, but it has been by statisticians since the
 
 To understand what is *projection pursuit*, we should first revist the definition of principal component analysis (PCA).
 
-For a given $u \in U^{d}$, let $Q(u)$ be the sample variance of $\langle x_1, u \rangle, \ldots, \langle x_n, u \rangle$, where $\langle \cdot \rangle$ is the inner product. Then PCA intends to find the following projection directions
-$$
-    u_1 = \underset{u \in U^{d}}{\operatorname{\argmax}} Q(u) \text{ and }\\
-    u_j = \underset{\substack{u \in U^{d},\\ \langle u, u_q \rangle = 0 \text{ for } q < j}}{\operatorname{\argmax}}
-    Q(u) \text{ for $j = 2, 3, \ldots d$}.
-$$
+For a given <img src="https://render.githubusercontent.com/render/math?math=u \in U^{d}">, let <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> be the sample variance of <img src="https://render.githubusercontent.com/render/math?math=\langle x_1, u \rangle, \ldots, \langle x_n, u \rangle">, where <img src="https://render.githubusercontent.com/render/math?math=\langle \cdot \rangle"> is the inner product. Then PCA intends to find the following projection directions
+![gamma_pca](/docs/src/assets/pca.png)
 
-And the definition for *projection pursuit* is very simple. Instead of defining $Q(u)$ to be the sample variance of scalar projections, we allow it to be an arbitrary function that is aligned with the exact problem we want to solve. Hence, PCA is just a special case of *projection pursuit*.
+And the definition for *projection pursuit* is very simple. Instead of defining <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> to be the sample variance of scalar projections, we allow it to be an arbitrary function that is aligned with the exact problem we want to solve. Hence, PCA is just a special case of *projection pursuit*.
 
 # Why you need projection pursuit?
-You may ask "why bother allowing an arbitrary definition for the objective function $Q(u)$?". People seem to be happy using PCA for most of the dimension reduction tasks in the past century. 
+You may ask "why bother allowing an arbitrary definition for the objective function <img src="https://render.githubusercontent.com/render/math?math=Q(u)">?". People seem to be happy using PCA for most of the dimension reduction tasks in the past century. 
 
-But I believe a better question should be "why $Q(u)$ has to be a measure of variance". Let me try to convince you why PCA should be concerning with my scratchy logo as an exmaple. You can find random points with three different colors: green, purple, and red. Assume we are some poor creatures who can only digest one dimensional information, then the way we understand the data solely based on how we conduct the dimension reduction. If the goal is to understand how many clusters are there, and we blindly apply PCA. The projection direction is indicated in the blue line on the right, and the three colored lines show how three clusters would look like. Obviously it's a disaster. They mixed together and there is no way you can understand the clustering structure.
+But I believe a better question should be "why <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> has to be a measure of variance". Let me try to convince you why PCA should be concerning with my scratchy logo as an exmaple. You can find random points with three different colors: green, purple, and red. Assume we are some poor creatures who can only digest one dimensional information, then the way we understand the data solely based on how we conduct the dimension reduction. If the goal is to understand how many clusters are there, and we blindly apply PCA. The projection direction is indicated in the blue line on the right, and the three colored lines show how three clusters would look like. Obviously it's a disaster. They mixed together and there is no way you can understand the clustering structure.
 
 Projection pursuit to the rescue. Clearly the optimal way is to project the data onto the black line in the bottom. In this case we can set the objective function to be the distance between clusters. And you can easily tell that the three clusters are well seperated.
 
@@ -80,8 +76,8 @@ using ProjectionPursuit
 res = projection_pursuit(data, snu, 3)
 ```
 
-Let's project the data onto the first direction, and compare the density function with the $Gamma(1,1)$ distribution.
+Let's project the data onto the first direction, and compare the density function with the Gamma(1,1) distribution.
 ![gamma_pp](/docs/src/assets/gamma_pp.png)
 
-And just in case you are curious what if we use PCA compare the density of the first principle with $Gamma(1,1)$ distribution.
+And just in case you are curious what if we use PCA compare the density of the first principle with Gamma(1,1) distribution.
 ![gamma_pca](/docs/src/assets/gamma_pca.png)
