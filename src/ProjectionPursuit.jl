@@ -17,7 +17,7 @@ struct ProjectionPursuitRes
 end
 
 """
-    sphere_optimize(data, object_fun)
+    sphere_optimize
 
 Optimize a given objective fucntion constrained on a unit sphere.
 
@@ -98,7 +98,7 @@ end
 
 
 """
-    projection_pursuit(data, object_fun, outdim)
+    projection_pursuit
 
 Conduct dimension reduction corresponding to specified objective function.
 
