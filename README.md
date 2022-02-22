@@ -11,12 +11,6 @@ Dimension reduction corresponds to specified objective function in Julia.
 [![Coverage](https://codecov.io/gh/xieyj17/ProjectionPursuit.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/xieyj17/ProjectionPursuit.jl)
 [![Reference](https://img.shields.io/badge/Reference-http%3A%2F%2Fhdl.handle.net%2F10012%2F16710-brightgreen)](http://hdl.handle.net/10012/16710)
 
-<script src="//yihui.org/js/math-code.js" defer></script>
-<!-- Just one possible MathJax CDN below. You may use others. -->
-<script defer
-  src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
 
 # What is ***Projection Pursuit***?
 This terminology might be new to you, but it has been by statisticians since the 70s, including the great John Tukey.
