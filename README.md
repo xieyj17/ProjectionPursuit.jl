@@ -45,15 +45,15 @@ Random.seed!(12345);
 N=500
 gamma_d = Gamma(2,1);
 gamma_data = rand(gamma_d, N);
-n=10;
-diag = collect(n:-1:1);
+n=35;
+diag = collect(n+1:-1:2);
 diag = diag.^2;
 D = Matrix(Diagonal(diag)); 
 gaussian_d = MvNormal(zeros(n), D);
 gaussian_data = rand(gaussian_d, N);
 data = hcat(gaussian_data', gamma_data);
 ```
-Let me explain what happened above. The 11-dimensional random vector is constituted with 10 independent Gaussian random variables with standard deviation from 10 to 1, and a Gamma(2,1) random variable with standard deviation of 2. We generate 500 samples of such random vectors.
+Let me explain what happened above. The 11-dimensional random vector is constituted with 35 independent Gaussian random variables with standard deviation from 36 to 2, and a Gamma(2,1) random variable with standard deviation of 2. We generate 500 samples of such random vectors.
 
 Now suppose our goal is to understand whether the data is skewed or not. Clearly the reasonable is a measure of skewness. Here we use the square of skewness as our objective function.
 ```julia
@@ -73,8 +73,8 @@ res = projection_pursuit(data, snu, 3)
 
 Let's project the data onto the first direction, and compare the density function with that of the Gamma component.
 
-![gamma_pp](/docs/src/assets/gamma_pp.png)
+![gamma_pp](/docs/src/assets/gamma_pp_35.png)
 
 And just in case you are curious what if we use PCA, here is the comparison of density functions. It totally misses the skewed part, which is not surprising at all!
 
-![gamma_pca](/docs/src/assets/gamma_pca.png)
+![gamma_pca](/docs/src/assets/gamma_pca_35.png)
