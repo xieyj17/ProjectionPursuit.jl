@@ -50,7 +50,7 @@ diag = collect(n:-1:1);
 diag = diag.^2;
 D = Matrix(Diagonal(diag)); 
 gaussian_d = MvNormal(zeros(n), D);
-gaussian_data = rand(d, N);
+gaussian_data = rand(gaussian_d, N);
 data = hcat(gaussian_data', gamma_data);
 ```
 Let me explain what happened above. The 11-dimensional random vector is constituted with 10 independent Gaussian random variables with standard deviation from 10 to 1, and a Gamma(2,1) random variable with standard deviation of 2. We generate 500 samples of such random vectors.
