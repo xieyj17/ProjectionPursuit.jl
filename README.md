@@ -13,6 +13,18 @@ Dimension reduction corresponds to specified objective function in Julia.
 
 (I know the math notation below looks crappy... It's the year of 2022 and GitHub still doesn't support LaTeX...smh)
 
+# Tl;dr
+
+## What does it do? 
+Simply put, it is complementary to the good old PCA. It allows you to find a lower-dimensional representation of the original data according to your specified objective function (compared with PCA which is restricted to the sample variance). I intended to say replace or substitute PCA but I also want to be humble here because there is a good chance that I might be horribly wrong. 
+
+## Why using Julia? 
+It’s lightning-fast. Enough said. 
+
+## What is the next step? 
+First thing is to continue improving the computational efficiency. It is always challenging to search in a high-dimensional space. The current version supports multi-threading, but I am still learning how to handle parallelization in Julia properly. Potential GPU support is also on my to-do list. Another thing is to develop several peripheral packages built upon ProjectionPursuit.jl to demonstrate how it can be applied in practice. 
+
+
 # What is ***Projection Pursuit***?
 This terminology might be new to you, but it has been discussed among statisticians since the 70s, including the *great* John Tukey.
 
