@@ -19,14 +19,16 @@ This terminology might be new to you, but it has been discussed among statistici
 To understand what is *projection pursuit*, we should first revist the definition of principal component analysis (PCA).
 
 For a given d-dimensional unit sphere <img src="https://render.githubusercontent.com/render/math?math=u \in U^{d}">, let <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> be the sample variance of the projection scores <img src="https://render.githubusercontent.com/render/math?math=\langle x_1, u \rangle, \ldots, \langle x_n, u \rangle">, where <img src="https://render.githubusercontent.com/render/math?math=\langle \cdot \rangle"> is the inner product. Then PCA tries to find the projection directions that maximize the variance of these projection scores:
-![gamma_pca](/docs/src/assets/pca.png)
+![pca](/docs/src/assets/pca.png)
 
 And the definition for *projection pursuit* is very straight forward. Instead of defining <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> to be the sample variance of those scalar projection scores, we allow it to be an arbitrary function that is aligned with the exact problem we want to solve. Hence, PCA is just a special case of *projection pursuit*, when we are only interested in the variance of the data.
 
 # Why you need projection pursuit?
 You may ask "why bother allowing an arbitrary definition for the objective function <img src="https://render.githubusercontent.com/render/math?math=Q(u)">?". People seem to be happy using PCA for most of the dimension reduction tasks in the past century. 
 
-But I believe a better question should be "why <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> has to be a measure of variance". Let me try to convince you why PCA should be concerning with my scratchy logo as an exmaple. You can find random points with three different colors: green, purple, and red. Assume we are some poor creatures who can only process information of one dimension, then the way we understand the data solely depends on how we conduct the dimension reduction for the 2-D data. If the goal is to understand how many clusters are there, but we blindly apply PCA, for which the projection direction is indicated By the blue line on the right. Then the three colored lines on the right show how three clusters would look like after doing pCA. Obviously it's a disaster. They mixed together and there is no way you can understand the clustering structure.
+But I believe a better question should be "why <img src="https://render.githubusercontent.com/render/math?math=Q(u)"> has to be a measure of variance?". When doing dimension reduction, the projection direction should be directly related to the problem you are working with, rather than blindly using variance for all cases. It's like if you ask me what is 2\* 3, no matter how closely is addition associated with multiplication, no matter how close is 5 close to 6, and not matter how faster is '+' than '\*', the correct answer from me should always be 2\*3=6 instead of 2+3=5.
+
+Let me try to convince you why PCA should be concerning with my scratchy logo as another exmaple. You can find random points with three different colors: green, purple, and red. Assume we are some poor creatures who can only process information of one dimension, then the way we understand the data solely depends on how we conduct the dimension reduction for the 2-D data. If the goal is to understand how many clusters are there, but we blindly apply PCA, for which the projection direction is indicated By the blue line on the right. Then the three colored lines on the right show how three clusters would look like after doing PCA. Obviously it's a disaster. They mixed together and there is no way you can understand the clustering structure.
 
 Projection pursuit to the rescue! Clearly the optimal way is to project the data onto the black line in the bottom. In this case we can set the objective function to be the distance between clusters. And you can easily tell that the three clusters are well seperated.
 
@@ -53,7 +55,7 @@ gaussian_d = MvNormal(zeros(n), D);
 gaussian_data = rand(gaussian_d, N);
 data = hcat(gaussian_data', gamma_data);
 ```
-Let me explain what happened above. The 11-dimensional random vector is constituted with 35 independent Gaussian random variables with standard deviation from 36 to 2, and a Gamma(2,1) random variable with standard deviation of 2. We generate 500 samples of such random vectors.
+Let me explain what happened above. The 36-dimensional random vector is constituted with 35 independent Gaussian random variables with standard deviation from 36 to 2, and a Gamma(2,1) random variable with standard deviation of 2. We generate 500 samples of such random vectors.
 
 Now suppose our goal is to understand whether the data is skewed or not. Clearly the reasonable is a measure of skewness. Here we use the square of skewness as our objective function.
 ```julia
@@ -71,10 +73,10 @@ using ProjectionPursuit
 res = projection_pursuit(data, snu, 3)
 ```
 
-Let's project the data onto the first direction, and compare the density function with that of the Gamma component.
+Let's project the data onto the first direction, and compare the density function with that of the Gamma component to see how well projection pursuit can reveal the relevant component of the data:
 
 ![gamma_pp](/docs/src/assets/gamma_pp_35.png)
 
-And just in case you are curious what if we use PCA, here is the comparison of density functions. It totally misses the skewed part, which is not surprising at all!
+And just in case you are curious what if we use PCA, here is the comparison of density functions. PCA just tells you what is the direction with largest variance, and it totally misses the skewed part. Not surprising at all!
 
 ![gamma_pca](/docs/src/assets/gamma_pca_35.png)
