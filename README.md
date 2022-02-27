@@ -37,6 +37,14 @@ I believe for statisticians, or data scientists or anyone who need to do a dimen
 # How to use this package?
 It's simple. Just use it as PCA, but feed it with an objective function. Here is a toy exmaple.
 
+To install the package:
+
+```julia
+using Pkg
+Pkg.add("ProjectionPursuit")
+using ProjectionPursuit
+```
+
 Let's generate the data first with the secret data generating process:
 
 ```julia
