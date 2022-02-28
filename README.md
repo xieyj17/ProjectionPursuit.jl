@@ -1,7 +1,8 @@
 ProjectionPursuit.jl
 ========
 
-Dimension reduction corresponds to specified objective function in Julia.
+Dimension reduction using projection pursuit in Julia.
+
 <p align="center">
 <img src="https://github.com/xieyj17/ProjectionPursuit.jl/raw/main/docs/src/assets/logo.png" width="200"/>
 </p>
