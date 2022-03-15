@@ -16,7 +16,7 @@ Dimension reduction using projection pursuit in Julia.
 
 # Tl;dr
 
-## What does it do? 
+## What does projection pursuit do? 
 Simply put, it is complementary to the good old PCA. It allows you to find a lower-dimensional representation of the original data according to your specified objective function (compared with PCA which is restricted to the sample variance). I intended to say replace or substitute PCA but I also want to be humble here because there is a good chance that I might be horribly wrong. 
 
 ## Why using Julia? 
