@@ -65,7 +65,7 @@ using Random
 using Distributions
 using LinearAlgebra
 Random.seed!(12345);
-N=500
+N=1500
 gamma_d = Gamma(2,1);
 gamma_data = rand(gamma_d, N);
 n=35;
